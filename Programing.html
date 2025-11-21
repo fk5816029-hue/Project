@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programming Books - Online Book Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+  background-color: #f5f7fa;
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(180deg, #2c3e50, #1a2530);
+  color: white;
+  padding: 20px;
+  position: fixed;
+  overflow-y: auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.logo h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-links a {
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 12px 15px;
+  margin: 5px 0;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  background-color: #34495e;
+  min-width: 200px;
+  border-radius: 5px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 15px;
+}
+
+/* Main content styles */
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  padding: 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 15px 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+}
+
+.search-container input {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.search-container button, #theme-toggle {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-container button:hover, #theme-toggle:hover {
+  background-color: #2980b9;
+}
+
+/* Hero section */
+.hero {
+  background: linear-gradient(135deg, #3498db, #8e44ad);
+  color: white;
+  padding: 40px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Books Grid */
+.books-section {
+  margin-bottom: 40px;
+}
+
+.books-section h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #2c3e50;
+}
+
+.books-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.book-item {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.book-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.book-item h4 {
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+  color: #2c3e50;
+}
+
+.book-cover {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.book-item:hover .book-cover img {
+  transform: scale(1.05);
+}
+
+.book-details {
+  padding: 15px 20px;
+}
+
+.book-author {
+  color: #7f8c8d;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.book-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #27ae60;
+  margin-bottom: 15px;
+}
+
+.book-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #c0392b;
+}
+
+/* Footer */
+.footer {
+  background-color: #2c3e50;
+  color: white;
+  padding: 30px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.social-icons img:hover {
+  transform: scale(1.1);
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  background-color: #1a1a2e;
+  color: #e6e6e6;
+}
+
+body.dark-mode .topbar,
+body.dark-mode .book-item {
+  background-color: #16213e;
+  color: #e6e6e6;
+}
+
+body.dark-mode .book-item h4 {
+  background-color: #0f3460;
+  color: #e6e6e6;
+}
+
+body.dark-mode .book-details {
+  color: #b8b8b8;
+}
+
+body.dark-mode .search-container input {
+  background-color: #16213e;
+  border-color: #0f3460;
+  color: #e6e6e6;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .books-content {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    padding: 15px 10px;
+  }
+  
+  .logo h2, .nav-links a span {
+    display: none;
+  }
+  
+  .main-content {
+    margin-left: 70px;
+  }
+  
+  .topbar {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .search-container {
+    width: 100%;
+  }
+  
+  .search-container input {
+    width: 100%;
+  }
+  
+  .books-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    display: none;
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .hero {
+    padding: 20px;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .book-actions {
+    flex-direction: column;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/logo2.jpg" alt="Online Book Store Logo" />
+      <h2>BOOKSTORE</h2>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <a href="categories.html" class="dropbtn">Categories ▼</a>
+        <div class="dropdown-content">
+          <a href="fiction.html">Fiction</a>
+          <a href="non-fiction.html">Non-Fiction</a>
+          <a href="programming.html" class="active">Programming</a>
+          <a href="design.html">Design & Arts</a>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="topbar">
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search programming books..." />
+        <button type="button" onclick="searchSite()">Search</button>
+      </div>
+      <button id="theme-toggle">Dark Mode</button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>Programming Books</h1>
+      <p>Master web development, Python, C, C++, PHP and more with our comprehensive programming book collection.</p>
+    </section>
+
+    <!-- Programming Books Grid -->
+    <section class="books-section">
+      <h2>Programming Languages & Technologies</h2>
+      <div class="books-content">
+        <!-- Book 1 -->
+        <div class="book-item">
+          <h4>HTML & CSS: Design and Build Websites</h4>
+          <div class="book-cover">
+            <img src="images/html-css-book.jpg" alt="HTML & CSS Book Cover">
+          </div>
+          <div class="book-details">
+            <p class="book-author">by Jon Duckett</p>
+            <p>Learn HTML basics and modern web design principles</p>
+            <p class="book-price">$29.99</p>
+            <div class="book-actions">
+              <button class="btn btn-primary" onclick="addToCart('prog1', 'HTML & CSS: Design and Build Websites', 29.99)">Add to Cart</button>
+              <button class="btn btn-secondary" onclick="addToWishlist('prog1', 'HTML & CSS: Design and Build Websites')">❤️ Wishlist</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Book 2 -->
+        <div class="book-item">
+          <h4>JavaScript: The Definitive Guide</h4>
+          <div class="book-cover">
+            <img src="images/javascript-book.jpg" alt="JavaScript Book Cover">
+          </div>
+          <div class="book-details">
+            <p class="book-author">by David Flanagan</p>
+            <p>Master JavaScript core concepts and advanced features</p>
+            <p class="book-price">$39.99</p>
+            <div class="book-actions">
+              <button class="btn btn-primary" onclick="addToCart('prog2', 'JavaScript: The Definitive Guide', 39.99)">Add to Cart</button>
+              <button class="btn btn-secondary" onclick="addToWishlist('prog2', 'JavaScript: The Definitive Guide')">❤️ Wishlist</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Book 3 -->
+        <div class="book-item">
+          <h4>Python Crash Course</h4>
+          <div class="book-cover">
+            <img src="images/python-book.jpg" alt="Python Book Cover">
+          </div>
+          <div class="book-details">
+            <p class="book-author">by Eric Matthes</p>
+            <p>Start your Python programming journey with hands-on projects</p>
+            <p class="book-price">$34.99</p>
+            <div class="book-actions">
+              <button class="btn btn-primary" onclick="addToCart('prog3', 'Python Crash Course', 34.99)">Add to Cart</button>
+              <button class="btn btn-secondary" onclick="addToWishlist('prog3', 'Python Crash Course')">❤️ Wishlist</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book 4 -->
+        <div class="book-item">
+          <h4>C Programming Language</h4>
+          <div class="book-cover">
+            <img src="images/c-programming-book.jpg" alt="C Programming Book Cover">
+          </div>
+          <div class="book-details">
+            <p class="book-author">by Brian Kernighan & Dennis Ritchie</p>
+            <p>The classic guide to C programming fundamentals</p>
+            <p class="book-price">$45.99</p>
+            <div class="book-actions">
+              <button class="btn btn-primary" onclick="addToCart('prog4', 'C Programming Language', 45.99)">Add to Cart</button>
+              <button class="btn btn-secondary" onclick="addToWishlist('prog4', 'C Programming Language')">❤️ Wishlist</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book 5 -->
+        <div class="book-item">
+          <h4>C++ Primer</h4>
+          <div class="book-cover">
+            <img src="images/cpp-book.jpg" alt="C++ Book Cover">
+          </div>
+          <div class="book-details">
+            <p class="book-author">by Stanley Lippman</p>
+            <p>Comprehensive guide to object-oriented programming with C++</p>
+            <p class="book-price">$49.99</p>
+            <div class="book-actions">
+              <button class="btn btn-primary" onclick="addToCart('prog5', 'C++ Primer', 49.99)">Add to Cart</button>
+              <button class="btn btn-secondary" onclick="addToWishlist('prog5', 'C++ Primer')">❤️ Wishlist</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book 6 -->
+        <div class="book-item">
+          <h4>PHP and MySQL Web Development</h4>
+          <div class="book-cover">
+            <img src="images/php-mysql-book.jpg" alt="PHP & MySQL Book Cover">
+          </div>
+          <div class="book-details">
+            <p class="book-author">by Luke Welling & Laura Thomson</p>
+            <p>Server-side scripting and database integration</p>
+            <p class="book-price">$42.99</p>
+            <div class="book-actions">
+              <button class="btn btn-primary" onclick="addToCart('prog6', 'PHP and MySQL Web Development', 42.99)">Add to Cart</button>
+              <button class="btn btn-secondary" onclick="addToWishlist('prog6', 'PHP and MySQL Web Development')">❤️ Wishlist</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2025 Online Book Store. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com" target="_blank"><img src="images/Facebook.jpg" alt="Facebook"></a>
+        <a href="https://www.instagram.com" target="_blank"><img src="images/instagram.jpg" alt="Instagram"></a>
+        <a href="https://www.youtube.com" target="_blank"><img src="images/youtube.jpg" alt="YouTube"></a>
+      </div>
+    </footer>
+  </div>
+
+  <script>// Theme Toggle
+let themeBtn = document.getElementById("theme-toggle");
+if (themeBtn) {
+  themeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+    themeBtn.textContent = document.body.classList.contains("dark-mode") ? "Light Mode" : "Dark Mode";
+  });
+
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+    themeBtn.textContent = "Light Mode";
+  }
+}
+
+// Search Function for Books
+function searchSite() {
+  let input = document.getElementById("search-input");
+  if (!input || !input.value.trim()) {
+    showPopup("Please type something to search!");
+    return;
+  }
+  
+  let query = input.value.toLowerCase().trim();
+  const bookItems = document.querySelectorAll('.book-item');
+  
+  let found = false;
+  bookItems.forEach(book => {
+    const title = book.querySelector('h4').textContent.toLowerCase();
+    const author = book.querySelector('.book-author').textContent.toLowerCase();
+    
+    if (title.includes(query) || author.includes(query)) {
+      book.style.display = 'block';
+      found = true;
+    } else {
+      book.style.display = 'none';
+    }
+  });
+  
+  if (!found) {
+    showPopup("No books found for: " + query);
+  }
+}
+
+function showPopup(message) {
+  let popup = document.createElement("div");
+  popup.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 10000;
+  `;
+  popup.textContent = message;
+  
+  document.body.appendChild(popup);
+  
+  setTimeout(() => {
+    if (document.body.contains(popup)) {
+      document.body.removeChild(popup);
+    }
+  }, 2000);
+}
+
+// Cart and Wishlist functionality
+function addToCart(bookId, bookTitle, bookPrice) {
+  let cart = JSON.parse(localStorage.getItem('bookCart')) || [];
+  const existingItem = cart.find(item => item.id === bookId);
+  
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: bookId,
+      title: bookTitle,
+      price: bookPrice,
+      quantity: 1
+    });
+  }
+  
+  localStorage.setItem('bookCart', JSON.stringify(cart));
+  showPopup(`${bookTitle} added to cart!`);
+}
+
+function addToWishlist(bookId, bookTitle) {
+  let wishlist = JSON.parse(localStorage.getItem('bookWishlist')) || [];
+  const existingIndex = wishlist.findIndex(item => item.id === bookId);
+  
+  if (existingIndex > -1) {
+    wishlist.splice(existingIndex, 1);
+    showPopup(`${bookTitle} removed from wishlist`);
+  } else {
+    wishlist.push({
+      id: bookId,
+      title: bookTitle,
+      dateAdded: new Date().toISOString()
+    });
+    showPopup(`${bookTitle} added to wishlist!`);
+  }
+  
+  localStorage.setItem('bookWishlist', JSON.stringify(wishlist));
+}
+
+// Add event listener for Enter key in search
+document.getElementById('search-input').addEventListener('keyup', function(event) {
+  if (event.key === 'Enter') {
+    searchSite();
+  }
+});</script>
+</body>
+</html>

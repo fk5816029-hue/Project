@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Portfolio</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+    }
+
+    .sidebar {
+        width: 260px;
+        background: #222;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .sidebar h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #00c4ff;
+    }
+
+    .menu-item {
+        background: #333;
+        padding: 15px;
+        margin: 8px 0;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+        color: white;
+        display: block;
+    }
+
+    .menu-item:hover {
+        background: #444;
+    }
+
+    .content {
+        flex: 1;
+        padding: 40px;
+        font-size: 22px;
+    }
+</style>
+</head>
+
+<body>
+
+<!-- LEFT SIDEBAR -->
+<div class="sidebar">
+    <h2>Portfolio List</h2>
+    <a href="farah.html" class="menu-item">Farah Portfolio</a>
+</div>
+
+<!-- RIGHT CONTENT -->
+<div class="content">
+    <h1>Welcome!</h1>
+    <p>Select any portfolio from the left side.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In</title>
+
+  <style>
+    /* Sign In Page Specific Styles */
+    .signin-page {
+      padding: 40px 20px;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f5f7fb 0%, #eef2ff 100%);
+    }
+
+    .signin-container {
+      max-width: 450px;
+      width: 100%;
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
+      border: 1px solid #e1e5e9;
+    }
+
+    .signin-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .signin-header h1 {
+      color: #4361EE;
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .signin-header p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    /* Form Styling */
+    #loginForm {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    #loginForm input {
+      padding: 12px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #f8f9fa;
+      transition: 0.3s;
+    }
+
+    #loginForm input:focus {
+      outline: none;
+      border-color: #4361EE;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(67,97,238,0.1);
+    }
+
+    #loginForm button {
+      background: #4361EE;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+
+    #loginForm button:hover {
+      background: #3A56D4;
+      transform: translateY(-2px);
+    }
+
+    .link-btn {
+      color: #4361EE;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .link-btn:hover {
+      text-decoration: underline;
+    }
+
+    .login-extra {
+      text-align: center;
+      margin-top: 15px;
+      border-top: 1px solid #e1e5e9;
+      padding-top: 15px;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 500;
+      display: none;
+    }
+
+    .message.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      display: block;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sign In Section -->
+  <section class="signin-page">
+    <div class="signin-container">
+
+      <div class="signin-header">
+        <h1>Sign In</h1>
+        <p>Welcome back! Please sign in to your account</p>
+      </div>
+
+      <!-- YOUR FORM INSERTED HERE -->
+      <form id="loginForm" method="POST" action="login.php">
+        <input type="email" placeholder="Email" id="loginEmail" name="email" required>
+        <input type="password" placeholder="Password" id="loginPassword" name="password" required>
+        <button type="submit">Login</button>
+
+        <div class="login-extra">
+          <p>Don't have an account? <a href="signup.html" class="link-btn">Signup</a></p>
+        </div>
+      </form>
+
+      <div id="signinMessage" class="message"></div>
+
+    </div>
+  </section>
+
+  <script>
+    // SIMPLE LOGIN FORM VALIDATION
+    const loginForm = document.getElementById('loginForm');
+    const msg = document.getElementById('signinMessage');
+
+    loginForm.addEventListener('submit', function (e) {
+
+      let email = document.getElementById('loginEmail').value.trim();
+      let password = document.getElementById('loginPassword').value.trim();
+
+      if (email === "" || password === "") {
+        e.preventDefault();
+        showMsg("Please fill all fields", "error");
+      }
+    });
+
+    function showMsg(text, type) {
+      msg.textContent = text;
+      msg.className = "message " + type;
+    }
+  </script>
+
+</body>
+</html>

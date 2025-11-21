@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Categories - Online Book Store</title>
+  <style>
+    /* Base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+      background-color: #f5f7fa;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(180deg, #2c3e50, #1a2530);
+      color: white;
+      padding: 20px;
+      position: fixed;
+      overflow-y: auto;  
+      overflow-x: visible;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .logo h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-links a {
+      color: #ecf0f1;
+      text-decoration: none;
+      padding: 12px 15px;
+      margin: 5px 0;
+      border-radius: 5px;
+      transition: all 0.3s;
+      display: block;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      background-color: #3498db;
+      color: white;
+    }
+
+    /* ===== CORRECTED DROPDOWN STYLES ===== */
+    .dropdown {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #34495e;
+      width:100%;
+      min-width: 100%;
+      border-radius: 5px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 9999;
+      left: 0;
+      top: 100%; /* Changed from top: 0 to top: 100% */
+      margin-top: 5px;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      color: #ecf0f1;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      overflow:hidden;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #3498db;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: table;
+      animation: fadeInDown 0.3s ease;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Main content styles */
+    .main-content {
+      flex: 1;
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 15px 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .search-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-container input {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 300px;
+    }
+
+    .search-container button, #theme-toggle {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .search-container button:hover, #theme-toggle:hover {
+      background-color: #2980b9;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #2c3e50;
+      color: white;
+      padding: 30px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-icons img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.1);
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+      background-color: #1a1a2e;
+      color: #e6e6e6;
+    }
+
+    body.dark-mode .topbar {
+      background-color: #16213e;
+      color: #e6e6e6;
+    }
+
+    body.dark-mode .search-container input {
+      background-color: #16213e;
+      border-color: #0f3460;
+      color: #e6e6e6;
+    }
+
+    /* Dark mode for dropdown */
+    body.dark-mode .dropdown-content {
+      background-color: #2c3e50;
+    }
+
+    body.dark-mode .dropdown-content a:hover {
+      background-color: #3498db;
+    }
+
+    /* Categories Intro Section */
+    .categories-intro {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .categories-intro h2 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 2.2rem;
+    }
+
+    .categories-intro hr {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(135deg, #3498db, #8e44ad);
+      border: none;
+      margin: 20px auto;
+    }
+
+    .categories-intro p {
+      color: #555;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      line-height: 1.6;
+    }
+
+    .quick-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .quick-link {
+      background: linear-gradient(135deg, #3498db, #8e44ad);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .quick-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    }
+
+    /* Categories Grid Section */
+    .categories-grid-section {
+      margin-bottom: 40px;
+    }
+
+    .categories-grid-section h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      color: #2c3e50;
+    }
+
+    .categories-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 20px;
+    }
+
+    .category-card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      border-color: #3498db;
+    }
+
+    .category-icon {
+      font-size: 3rem;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #3498db, #8e44ad);
+      border-radius: 50%;
+      color: white;
+    }
+
+    .category-info {
+      flex: 1;
+    }
+
+    .category-info h3 {
+      color: #2c3e50;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+
+    .category-info p {
+      color: #666;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .book-count {
+      background: #e8f4fc;
+      color: #3498db;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .category-arrow {
+      font-size: 1.5rem;
+      color: #3498db;
+      transition: transform 0.3s;
+    }
+
+    .category-card:hover .category-arrow {
+      transform: translateX(5px);
+    }
+
+    /* Newsletter Section */
+    .newsletter-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 50px 0;
+      border-radius: 15px;
+      margin-bottom: 30px;
+    }
+
+    .newsletter-container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .newsletter-content h2 {
+      color: white;
+      margin-bottom: 15px;
+      font-size: 2rem;
+    }
+
+    .newsletter-content p {
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .newsletter-form .form-group {
+      display: flex;
+      flex: 1;
+      gap: 10px;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .subscribe-btn {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .subscribe-btn:hover {
+      background: #219a52;
+    }
+
+    .newsletter-message {
+      margin-top: 15px;
+      font-weight: 500;
+      color: white;
+    }
+
+    /* Dark mode styles for categories */
+    body.dark-mode .categories-intro,
+    body.dark-mode .category-card {
+      background-color: #16213e;
+      color: #e6e6e6;
+    }
+
+    body.dark-mode .categories-intro h2,
+    body.dark-mode .categories-grid-section h2 {
+      color: #e6e6e6;
+    }
+
+    body.dark-mode .categories-intro p {
+      color: #b8b8b8;
+    }
+
+    body.dark-mode .category-info h3 {
+      color: #e6e6e6;
+    }
+
+    body.dark-mode .category-info p {
+      color: #b8b8b8;
+    }
+
+    body.dark-mode .book-count {
+      background: #2c3e50;
+      color: #3498db;
+    }
+
+    /* Popup styles */
+    .custom-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.9);
+      color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      z-index: 10000;
+      font-size: 16px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      min-width: 250px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 1024px) {
+      .categories-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 70px;
+        padding: 15px 10px;
+      }
+      
+      .logo h2 {
+        display: none;
+      }
+      
+      .main-content {
+        margin-left: 70px;
+      }
+      
+      .topbar {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .search-container {
+        width: 100%;
+      }
+      
+      .search-container input {
+        width: 100%;
+      }
+      
+      .categories-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .categories-intro {
+        padding: 30px 20px;
+      }
+      
+      .quick-links {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .quick-link {
+        width: 200px;
+        text-align: center;
+      }
+      
+      .category-card {
+        padding: 20px;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+      
+      .newsletter-form .form-group {
+        flex-direction: column;
+      }
+      
+      .footer {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+
+      /* Mobile dropdown fix */
+      .dropdown-content {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50%;
+        margin-top: 0;
+        width: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        display: none;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .category-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+      
+      .category-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+      }
+      
+      .categories-intro h2 {
+        font-size: 1.8rem;
+      }
+      
+      .categories-grid-section h2 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/logo2.jpg" alt="Book Store Logo" />
+      <h2>BOOKSTORE</h2>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <a href="categories.html" class="dropbtn active">Categories ▼</a>
+        <div class="dropdown-content">
+          <a href="fiction.html">Fiction</a>
+          <a href="non-fiction.html">Non-Fiction</a>
+          <a href="science.html">Science</a>
+          <a href="programming.html">Programming</a>
+          <a href="design.html">Design & Arts</a>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </aside>
+
+  <!--Main Content -->
+  <div class="main-content">
+    <div class="topbar">
+      <div class="search-container">
+        <input id="search-input" type="text" placeholder="Search categories..." />
+        <button onclick="searchSite()">Search</button>
+      </div>
+      <button id="theme-toggle">Dark Mode</button>
+    </div>
+
+    <!-- Categories Intro -->
+    <section class="categories-intro">
+      <h2>Browse Our Book Categories</h2>
+      <hr>
+      <p>Explore our extensive collection of books across various genres. Find your next favorite read from our carefully curated categories.</p>
+      
+      <!-- Quick Category Links -->
+      <div class="quick-links">
+        <a href="fiction.html" class="quick-link">📚 Fiction</a>
+        <a href="non-fiction.html" class="quick-link">📖 Non-Fiction</a>
+        <a href="science.html" class="quick-link">🔬 Science</a>
+        <a href="programming.html" class="quick-link">💻 Programming</a>
+        <a href="design.html" class="quick-link">🎨 Design & Arts</a>
+      </div>
+    </section>
+
+    <!-- Categories Grid -->
+    <section class="categories-grid-section">
+      <h2>All Categories</h2>
+      <div class="categories-container">
+        <!-- Fiction Category -->
+        <div class="category-card" onclick="navigateToCategory('fiction.html')">
+          <div class="category-icon">📚</div>
+          <div class="category-info">
+            <h3>Fiction</h3>
+            <p>Novels, short stories, and literary fiction</p>
+            <span class="book-count">1,250+ Books</span>
+          </div>
+          <div class="category-arrow">→</div>
+        </div>
+
+        <!-- Non-Fiction Category -->
+        <div class="category-card" onclick="navigateToCategory('non-fiction.html')">
+          <div class="category-icon">📖</div>
+          <div class="category-info">
+            <h3>Non-Fiction</h3>
+            <p>Biographies, history, and factual literature</p>
+            <span class="book-count">980+ Books</span>
+          </div>
+          <div class="category-arrow">→</div>
+        </div>
+
+        <!-- Science Category -->
+        <div class="category-card" onclick="navigateToCategory('science.html')">
+          <div class="category-icon">🔬</div>
+          <div class="category-info">
+            <h3>Science</h3>
+            <p>Physics, biology, and popular science</p>
+            <span class="book-count">650+ Books</span>
+          </div>
+          <div class="category-arrow">→</div>
+        </div>
+
+        <!-- Programming Category -->
+        <div class="category-card" onclick="navigateToCategory('programming.html')">
+          <div class="category-icon">💻</div>
+          <div class="category-info">
+            <h3>Programming</h3>
+            <p>Web development, Python, and software engineering</p>
+            <span class="book-count">420+ Books</span>
+          </div>
+          <div class="category-arrow">→</div>
+        </div>
+
+        <!-- Design & Arts Category -->
+        <div class="category-card" onclick="navigateToCategory('design.html')">
+          <div class="category-icon">🎨</div>
+          <div class="category-info">
+            <h3>Design & Arts</h3>
+            <p>Graphic design, architecture, and photography</p>
+            <span class="book-count">350+ Books</span>
+          </div>
+          <div class="category-arrow">→</div>
+        </div>
+
+        <!-- Business Category -->
+        <div class="category-card" onclick="navigateToCategory('business.html')">
+          <div class="category-icon">💼</div>
+          <div class="category-info">
+            <h3>Business</h3>
+            <p>Entrepreneurship, management, and finance</p>
+            <span class="book-count">520+ Books</span>
+          </div>
+          <div class="category-arrow">→</div>
+        </div>
+
+        <!-- Children's Books -->
+        <div class="category-card" onclick="navigateToCategory('children.html')">
+          <div class="category-icon">👶</div>
+          <div class="category-info">
+            <h3>Children's Books</h3>
+            <p>Picture books and educational content</p>
+            <span class="book-count">890+ Books</span>
+          </div>
+          <div class="category-arrow">→</div>
+        </div>
+
+        <!-- Mystery & Thriller -->
+        <div class="category-card" onclick="navigateToCategory('mystery.html')">
+          <div class="category-icon">🕵️</div>
+          <div class="category-info">
+            <h3>Mystery & Thriller</h3>
+            <p>Crime, suspense, and detective stories</p>
+            <span class="book-count">720+ Books</span>
+          </div>
+          <div class="category-arrow">→</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Subscription -->
+    <section class="newsletter-section">
+      <div class="newsletter-container">
+        <div class="newsletter-content">
+          <h2>Stay Updated with New Arrivals</h2>
+          <p>Subscribe to our newsletter and be the first to know about new book releases and exclusive offers.</p>
+          
+          <form id="newsletterForm" class="newsletter-form">
+            <div class="form-group">
+              <input type="email" id="newsletterEmail" placeholder="Enter your email address" required>
+              <button type="submit" class="subscribe-btn">Subscribe</button>
+            </div>
+          </form>
+          
+          <div id="newsletterMessage" class="newsletter-message"></div>
+        </div>
+      </div>
+    </section>
+
+    <!--Footer-->
+    <footer class="footer">
+      <p>© 2025 Online Book Store. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com" target="_blank">
+          <img src="images/Facebook.jpg" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+          <img src="images/instagram.jpg" alt="Instagram">
+        </a>
+        <a href="https://www.youtube.com" target="_blank">
+          <img src="images/youtube.jpg" alt="YouTube">
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Navigation function
+    function navigateToCategory(page) {
+      window.location.href = page;
+    }
+
+    // Search functionality
+    function searchSite() {
+      const searchInput = document.getElementById('search-input');
+      if (!searchInput || !searchInput.value.trim()) {
+        showPopup("Please type something to search!");
+        return;
+      }
+      
+      const query = searchInput.value.toLowerCase().trim();
+      const categoryCards = document.querySelectorAll('.category-card');
+      
+      let found = false;
+      categoryCards.forEach(function(card) {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        
+        if (title.includes(query) || description.includes(query)) {
+          card.style.display = 'flex';
+          found = true;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      
+      if (!found) {
+        showPopup("No categories found for: " + query);
+      }
+    }
+
+    // Newsletter subscription
+    document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletterEmail').value.trim();
+      const message = document.getElementById('newsletterMessage');
+      
+      if (email && validateEmail(email)) {
+        // Store subscription in localStorage
+        let subscriptions = JSON.parse(localStorage.getItem('newsletterSubscriptions')) || [];
+        if (!subscriptions.includes(email)) {
+          subscriptions.push(email);
+          localStorage.setItem('newsletterSubscriptions', JSON.stringify(subscriptions));
+        }
+        
+        message.textContent = "Thank you for subscribing to our newsletter!";
+        message.style.color = "#90EE90";
+        document.getElementById('newsletterEmail').value = '';
+        
+        // Clear message after 3 seconds
+        setTimeout(function() {
+          message.textContent = '';
+        }, 3000);
+      } else {
+        message.textContent = "Please enter a valid email address.";
+        message.style.color = "#FF6B6B";
+      }
+    });
+
+    // Utility functions
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function showPopup(message) {
+      const existingPopup = document.querySelector('.custom-popup');
+      if (existingPopup) {
+        existingPopup.remove();
+      }
+      
+      const popup = document.createElement("div");
+      popup.className = 'custom-popup';
+      popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); color: white; padding: 20px 30px; border-radius: 10px; z-index: 10000; font-size: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); min-width: 250px;';
+      popup.textContent = message;
+      
+      document.body.appendChild(popup);
+      
+      setTimeout(function() {
+        if (document.body.contains(popup)) {
+          document.body.removeChild(popup);
+        }
+      }, 2000);
+    }
+
+    // Theme toggle functionality
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        themeBtn.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+      });
+
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeBtn.textContent = 'Light Mode';
+      }
+    }
+
+    // Add event listener for Enter key in search
+    document.getElementById('search-input').addEventListener('keyup', function(event) {
+      if (event.key === 'Enter') {
+        searchSite();
+      }
+    });
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set initial theme
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        if (themeBtn) {
+          themeBtn.textContent = 'Light Mode';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

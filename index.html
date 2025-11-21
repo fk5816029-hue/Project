@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Online Book Store</title>
+<style>
+  /* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: #f5f7fa;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: linear-gradient(180deg, #2c3e50, #1a2530);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    overflow-y: auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.logo h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-links a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 12px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    background-color: #3498db;
+    color: white;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: #34495e;
+    min-width: 200px;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 15px 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+}
+
+.search-container input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 300px;
+    font-size: 1rem;
+}
+
+.search-container button, #theme-toggle {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+}
+
+.search-container button:hover, #theme-toggle:hover {
+    background-color: #2980b9;
+}
+
+.profile-option {
+    display: flex;
+    align-items: center;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.profile-link:hover {
+    background-color: #f0f0f0;
+}
+
+.profile-icon {
+    font-size: 1.5rem;
+    margin-right: 8px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #777;
+    background: none;
+    border: none;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    color: #333;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+}
+
+#exploreBtn {
+    margin-top: 20px;
+    padding: 12px 25px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+#exploreBtn:hover {
+    background-color: #2980b9;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+/* Audio Section */
+.audio-section {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.audio-section h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 1.3rem;
+}
+
+audio {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Slideshow Styles */
+.slideshow-container {
+    max-width: 100%;
+    position: relative;
+    margin: 30px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.slide {
+    display: none;
+}
+
+.slide img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.dots-container {
+    text-align: center;
+    padding: 15px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.5));
+}
+
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.dot:hover, .dot.active {
+    background-color: #717171;
+}
+
+/* Articles Section */
+.articles-section {
+    margin: 40px 0;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.articles-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+    display: inline-block;
+    width: 100%;
+}
+
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.article-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.article-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.article-card h3 {
+    padding: 20px 20px 10px;
+    color: #2c3e50;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.article-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 3px solid #3498db;
+}
+
+.article-content {
+    padding: 0 20px 20px;
+}
+
+.article-excerpt {
+    margin-bottom: 15px;
+    line-height: 1.7;
+    color: #555;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.article-full {
+    line-height: 1.8;
+    color: #444;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.read-more-btn {
+    background: none;
+    border: none;
+    color: #3498db;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.read-more-btn:hover {
+    color: #2980b9;
+    transform: translateX(5px);
+}
+
+/* Book Categories Section */
+.course-highlights {
+    margin: 40px 0;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.course-highlights h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.highlight-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    text-align: center;
+    padding-bottom: 25px;
+    border: 1px solid #e9ecef;
+}
+
+.highlight-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.highlight-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #3498db;
+}
+
+.highlight-card h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 0 15px;
+}
+
+.highlight-card p {
+    padding: 0 15px;
+    margin-bottom: 20px;
+    color: #666;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.highlight-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.highlight-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    background: linear-gradient(135deg, #2980b9, #3498db);
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.footer p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background: #3498db;
+    transform: translateY(-3px);
+}
+
+.social-icons img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1a1a2e;
+    color: #e6e6e6;
+}
+
+body.dark-mode .topbar,
+body.dark-mode .audio-section,
+body.dark-mode .articles-section,
+body.dark-mode .course-highlights,
+body.dark-mode .article-card,
+body.dark-mode .highlight-card {
+    background-color: #16213e;
+    color: #e6e6e6;
+    border-color: #0f3460;
+}
+
+body.dark-mode .search-container input {
+    background-color: #0f3460;
+    border-color: #1a3a5f;
+    color: #e6e6e6;
+}
+
+body.dark-mode .profile-link {
+    color: #e6e6e6;
+}
+
+body.dark-mode .profile-link:hover {
+    background-color: #0f3460;
+}
+
+body.dark-mode .articles-section h2,
+body.dark-mode .course-highlights h2 {
+    color: #e6e6e6;
+    border-bottom-color: #3498db;
+}
+
+body.dark-mode .article-card h3,
+body.dark-mode .highlight-card h3 {
+    color: #e6e6e6;
+}
+
+body.dark-mode .article-excerpt,
+body.dark-mode .article-full,
+body.dark-mode .highlight-card p {
+    color: #b8b8b8;
+}
+
+body.dark-mode .article-card,
+body.dark-mode .highlight-card {
+    background-color: #1e2a47;
+}
+
+body.dark-mode .footer {
+    background: linear-gradient(135deg, #1a2530, #2c3e50);
+}
+
+body.dark-mode .modal-content {
+    background-color: #16213e;
+    color: #e6e6e6;
+}
+
+body.dark-mode .close-btn {
+    color: #b8b8b8;
+}
+
+body.dark-mode .close-btn:hover {
+    color: #e6e6e6;
+    background-color: #0f3460;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .article-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+    
+    .highlight-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding: 15px 10px;
+    }
+    
+    .logo h2 {
+        display: none;
+    }
+    
+    .main-content {
+        margin-left: 70px;
+        padding: 15px;
+    }
+    
+    .topbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .search-container {
+        width: 100%;
+    }
+    
+    .search-container input {
+        width: 100%;
+    }
+    
+    .article-grid,
+    .highlight-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .articles-section,
+    .course-highlights {
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .hero {
+        padding: 30px 15px;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .slide img {
+        height: 300px;
+    }
+    
+    .footer {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        display: none;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .hero {
+        padding: 25px 15px;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .slide img {
+        height: 200px;
+    }
+    
+    .articles-section h2,
+    .course-highlights h2 {
+        font-size: 1.8rem;
+    }
+    
+    .article-card img,
+    .highlight-card img {
+        height: 180px;
+    }
+    
+    .articles-section,
+    .course-highlights {
+        padding: 15px;
+    }
+    
+    .modal-content {
+        padding: 20px;
+    }
+}
+</style>
+</head>
+<body>
+  <!--SideBar-->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/logo2.jpg" alt="Book Store Logo" />
+      <h2>BOOKSTORE</h2>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <div class="dropdown">
+        <a href="categories.html" class="dropbtn">Categories ▼</a>
+        <div class="dropdown-content">
+          <a href="programming.html">Programming</a>
+          <a href="non-fiction.html">Non-Fiction</a>
+          <a href="science.html">Science</a>
+          <a href="design.html">Design</a>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </aside>
+
+  <!--Main Section-->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="search-container">
+        <input id="search-input" type="text" placeholder="Search..." />
+        <button onclick="searchSite()">Search</button>
+      </div>
+      <button id="theme-toggle">Dark Mode</button>
+      
+      <!-- Profile Option in Topbar -->
+      <div class="profile-option">
+        <a href="registration.html" class="profile-link">
+          <span class="profile-icon">👤</span>
+        </a>
+      </div>
+    </header>
+
+    <!--Welcome Modal-->
+    <div id="welcomeModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Welcome to Online Book Store!</h2>
+        <p>We're excited to have you here. Explore our books and start reading today!</p>
+        <button id="exploreBtn">Start Exploring</button>
+      </div>
+    </div>
+
+    <!--Hero Section-->
+    <section class="hero">
+      <h1>Welcome to Online Book Store!</h1>
+      <p>Discover Fiction, Non-Fiction, Science, and Design books with our extensive collection and recommendations.</p>
+    </section>
+
+    <!--Audio Section -->
+    <section class="audio-section">
+      <h3>Listen to our Book Recommendation Podcast</h3>
+      <audio controls>
+        <source src="images/audio.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+      </audio>
+    </section>
+
+    <!-- Professional Slideshow Section -->
+    <div class="slideshow-container">
+      <div class="slide fade">
+        <img src="images/slide1.jpg" alt="Fiction Books">
+      </div>
+      <div class="slide fade">
+        <img src="images/slide2.jpg" alt="Non-Fiction Books">
+      </div>
+      <div class="slide fade">
+        <img src="images/slide3.avif" alt="Science Books">
+      </div>
+    
+      <!-- Dots Indicator -->
+      <div class="dots-container">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+      </div>
+    </div>
+
+    <!--Articles Section-->
+    <section class="articles-section">
+      <h2>Book Reviews & Articles</h2>
+      <div class="article-grid">
+        <article class="article-card">
+          <h3>Benefits of Reading Fiction</h3>
+          <img src="images/article1.png" alt="Fiction Books">
+          <div class="article-content">
+            <p class="article-excerpt">Reading fiction enhances empathy, improves brain connectivity, and reduces stress.</p>
+            <p class="article-full" style="display: none;">
+              Studies show that reading fiction can significantly increase empathy and emotional intelligence. When we immerse ourselves in stories, our brains create mental simulations of the experiences, which helps us better understand others in real life. Regular reading also strengthens neural pathways, improves vocabulary, and can reduce stress levels by up to 68%. Make fiction a part of your daily routine for both entertainment and cognitive benefits.
+            </p>
+            <button class="read-more-btn" onclick="toggleReadMore(this)">Read More →</button>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <h3>Building a Reading Habit</h3>
+          <img src="images/article2.webp" alt="Reading Habit">
+          <div class="article-content">
+            <p class="article-excerpt">Developing a consistent reading habit can transform your life and expand your knowledge.</p>
+            <p class="article-full" style="display: none;">
+              Building a sustainable reading habit starts with setting realistic goals. Begin with just 15-20 minutes per day, choose books that genuinely interest you, and create a comfortable reading environment. Many successful readers recommend tracking your progress, joining a book club for accountability, and always carrying a book with you. Remember that it's okay to abandon books that don't capture your interest - the goal is enjoyment and learning, not completion at all costs.
+            </p>
+            <button class="read-more-btn" onclick="toggleReadMore(this)">Read More →</button>
+          </div>
+        </article>
+        
+        <article class="article-card">
+          <h3>Science Books for Curious Minds</h3>
+          <img src="images/article3.jpg" alt="Science Books">
+          <div class="article-content">
+            <p class="article-excerpt">Explore the best science books that make complex topics accessible to everyone.</p>
+            <p class="article-full" style="display: none;">
+              Great science writing bridges the gap between complex scientific concepts and public understanding. Books like "A Brief History of Time" by Stephen Hawking, "The Gene" by Siddhartha Mukherjee, and "The Immortal Life of Henrietta Lacks" by Rebecca Skloot have made profound scientific ideas accessible to millions. These books not only educate but also inspire wonder about the natural world. Whether you're interested in physics, biology, or psychology, there's a science book that can expand your horizons.
+            </p>
+            <button class="read-more-btn" onclick="toggleReadMore(this)">Read More →</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Book Categories Section -->
+    <section class="course-highlights">
+      <h2>Featured Book Categories</h2>
+      <div class="highlight-grid">
+        <div class="highlight-card">
+          <img src="images/fictions.webp" alt="Fiction">
+          <h3>Fiction</h3>
+          <p>Explore novels, short stories, and literary fiction</p>
+          <a href="fiction.html" class="highlight-btn">Browse Books</a>
+        </div>
+        
+        <div class="highlight-card">
+          <img src="images/nonfiction.jpg" alt="Non-Fiction">
+          <h3>Non-Fiction</h3>
+          <p>Biographies, history, self-help and more</p>
+          <a href="non-fiction.html" class="highlight-btn">Browse Books</a>
+        </div>
+        
+        <div class="highlight-card">
+          <img src="images/science.webp" alt="Science">
+          <h3>Science</h3>
+          <p>Physics, biology, technology and popular science</p>
+          <a href="science.html" class="highlight-btn">Browse Books</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>© 2025 Online Book Store. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com" target="_blank">
+          <img src="images/Facebook.jpg" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+          <img src="images/instagram.jpg" alt="Instagram">
+        </a>
+        <a href="https://www.youtube.com" target="_blank">
+          <img src="images/youtube.png" alt="YouTube">
+        </a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Slideshow functionality
+let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+    let slides = document.getElementsByClassName("slide");
+    let dots = document.getElementsByClassName("dot");
+    
+    // Hide all slides
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    
+    // Remove active class from all dots
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    
+    // Increment slide index
+    slideIndex++;
+    if (slideIndex > slides.length) {slideIndex = 1}
+    
+    // Show current slide and activate corresponding dot
+    if (slides[slideIndex-1]) {
+        slides[slideIndex-1].style.display = "block";
+    }
+    if (dots[slideIndex-1]) {
+        dots[slideIndex-1].className += " active";
+    }
+    
+    // Change slide every 5 seconds
+    setTimeout(showSlides, 5000);
+}
+
+// Manual slide navigation
+function currentSlide(n) {
+    slideIndex = n;
+    showSlides();
+}
+
+// Welcome Modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('welcomeModal');
+    const closeBtn = document.querySelector('.close-btn');
+    const exploreBtn = document.getElementById('exploreBtn');
+    
+    // Show modal on page load (after 1 second delay)
+    setTimeout(function() {
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }, 1000);
+    
+    // Close modal when close button is clicked
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+    
+    // Close modal and scroll to content when explore button is clicked
+    if (exploreBtn) {
+        exploreBtn.addEventListener('click', function() {
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                heroSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+// Toggle read more functionality for articles
+function toggleReadMore(button) {
+    const articleContent = button.parentElement;
+    const excerpt = articleContent.querySelector('.article-excerpt');
+    const fullText = articleContent.querySelector('.article-full');
+    
+    if (fullText.style.display === 'none') {
+        excerpt.style.display = 'none';
+        fullText.style.display = 'block';
+        button.textContent = 'Read Less ←';
+    } else {
+        excerpt.style.display = 'block';
+        fullText.style.display = 'none';
+        button.textContent = 'Read More →';
+    }
+}
+
+// Search functionality
+function searchSite() {
+    const searchInput = document.getElementById('search-input');
+    if (!searchInput) return;
+    
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    
+    if (!searchTerm) {
+        showPopup('Please enter a search term');
+        return;
+    }
+    
+    // Simple search implementation
+    const searchableElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, li');
+    let found = false;
+    
+    // Remove previous highlights
+    removeHighlights();
+    
+    searchableElements.forEach(element => {
+        const text = element.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            highlightText(element, searchTerm);
+            found = true;
+            
+            // Scroll to first occurrence
+            if (!window.searched) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                window.searched = true;
+            }
+        }
+    });
+    
+    if (!found) {
+        showPopup('No results found for: ' + searchTerm);
+    }
+}
+
+function highlightText(element, searchTerm) {
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    element.innerHTML = element.innerHTML.replace(regex, '<mark style="background-color: yellow; color: black;">$1</mark>');
+}
+
+function removeHighlights() {
+    const marks = document.querySelectorAll('mark');
+    marks.forEach(mark => {
+        const parent = mark.parentNode;
+        parent.replaceChild(document.createTextNode(mark.textContent), mark);
+        parent.normalize();
+    });
+    window.searched = false;
+}
+
+function showPopup(message) {
+    // Remove existing popup if any
+    const existingPopup = document.querySelector('.custom-popup');
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+    
+    const popup = document.createElement('div');
+    popup.className = 'custom-popup';
+    popup.textContent = message;
+    popup.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 20px 30px;
+        border-radius: 10px;
+        z-index: 10000;
+        font-size: 16px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        min-width: 250px;
+    `;
+    
+    document.body.appendChild(popup);
+    
+    setTimeout(function() {
+        if (document.body.contains(popup)) {
+            document.body.removeChild(popup);
+        }
+    }, 2000);
+}
+
+// Theme toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('theme-toggle');
+    
+    if (themeToggle) {
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.textContent = 'Light Mode';
+        }
+        
+        // Toggle theme when button is clicked
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = 'Light Mode';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = 'Dark Mode';
+            }
+        });
+    }
+});
+
+// Add keyboard support for search
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-input');
+    
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                searchSite();
+            }
+        });
+    }
+});
+
+// Smooth scrolling for internal links
+document.addEventListener('DOMContentLoaded', function() {
+    const internalLinks = document.querySelectorAll('a[href^="#"]');
+    
+    internalLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+
+// Initialize articles with proper display
+document.addEventListener('DOMContentLoaded', function() {
+    // Ensure all article excerpts are visible and full text hidden initially
+    const articleExcerpts = document.querySelectorAll('.article-excerpt');
+    const articleFullTexts = document.querySelectorAll('.article-full');
+    
+    articleExcerpts.forEach(excerpt => {
+        excerpt.style.display = 'block';
+    });
+    
+    articleFullTexts.forEach(fullText => {
+        fullText.style.display = 'none';
+    });
+});
+
+// Add loading state for images
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img');
+    
+    images.forEach(img => {
+        // Add loading state
+        if (!img.complete) {
+            img.style.opacity = '0.7';
+            img.addEventListener('load', function() {
+                this.style.opacity = '1';
+            });
+        }
+    });
+});
+  </script>
+</body>
+</html>
