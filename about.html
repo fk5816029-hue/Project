@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - Online Book Store</title>
+  <style>
+    /* Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        display: flex;
+        background-color: #f5f7fa;
+        color: #333;
+        transition: background-color 0.3s, color 0.3s;
+        min-height: 100vh;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background: linear-gradient(180deg, #2c3e50, #1a2530);
+        color: white;
+        padding: 20px;
+        position: fixed;
+        overflow-y: auto;
+        left: 0;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .logo img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .logo h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-links a {
+        color: #ecf0f1;
+        text-decoration: none;
+        padding: 12px 15px;
+        margin: 5px 0;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0;
+        background-color: #34495e;
+        min-width: 200px;
+        border-radius: 5px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+        flex: 1;
+        margin-left: 250px;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 15px 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .search-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-container input {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 300px;
+        font-size: 1rem;
+    }
+
+    .search-container button, #theme-toggle {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-size: 1rem;
+    }
+
+    .search-container button:hover, #theme-toggle:hover {
+        background-color: #2980b9;
+    }
+
+    .profile-option {
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        padding: 8px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .profile-link:hover {
+        background-color: #f0f0f0;
+    }
+
+    .profile-icon {
+        font-size: 1.5rem;
+        margin-right: 8px;
+    }
+
+    /* About Hero Section */
+    .about-hero {
+        text-align: center;
+        padding: 60px 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        margin-bottom: 40px;
+    }
+
+    .about-hero h1 {
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.6;
+        opacity: 0.95;
+    }
+
+    /* About Content */
+    .about-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .about-main {
+        text-align: center;
+        margin-bottom: 50px;
+        padding: 0 20px;
+    }
+
+    .about-main p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        color: #555;
+        max-width: 800px;
+        margin: 0 auto 30px;
+    }
+
+    /* Stats Container */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+        padding: 0 20px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 35px 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .stat-card h3 {
+        font-size: 2.8rem;
+        color: #3498db;
+        margin-bottom: 12px;
+        font-weight: 700;
+    }
+
+    .stat-card p {
+        color: #666;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    /* About Cards */
+    .about-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 35px;
+        margin: 50px 0;
+        padding: 0 20px;
+    }
+
+    .professional-card {
+        background: white;
+        padding: 45px 30px;
+        border-radius: 15px;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: all 0.4s ease;
+        border: 1px solid #f0f0f0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .professional-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #3498db, #2ecc71);
+    }
+
+    .professional-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+
+    .card-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 25px;
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+    }
+
+    .professional-card h3 {
+        color: #2c3e50;
+        margin-bottom: 25px;
+        font-size: 1.7rem;
+        font-weight: 600;
+    }
+
+    .professional-card p {
+        color: #666;
+        line-height: 1.8;
+        font-size: 1.1rem;
+        text-align: left;
+    }
+
+    /* Values Section */
+    .values-section {
+        margin: 70px 0;
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .values-section h2 {
+        color: #2c3e50;
+        margin-bottom: 50px;
+        font-size: 2.4rem;
+        font-weight: 700;
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .value-item {
+        background: #f8f9fa;
+        padding: 35px 25px;
+        border-radius: 12px;
+        border-left: 5px solid #3498db;
+        transition: all 0.3s ease;
+        text-align: left;
+    }
+
+    .value-item:hover {
+        background: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transform: translateX(10px);
+    }
+
+    .value-item h4 {
+        color: #2c3e50;
+        margin-bottom: 18px;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .value-item p {
+        color: #666;
+        line-height: 1.7;
+        font-size: 1rem;
+    }
+
+    /* Team Section */
+    .team-section {
+        margin: 70px 0;
+        padding: 0 20px;
+    }
+
+    .team-section h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 50px;
+        font-size: 2.4rem;
+        font-weight: 700;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+    }
+
+    .team-member {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .team-member:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .member-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: white;
+        font-weight: bold;
+    }
+
+    .team-member h4 {
+        color: #2c3e50;
+        margin-bottom: 8px;
+        font-size: 1.3rem;
+    }
+
+    .team-member .position {
+        color: #3498db;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .team-member p {
+        color: #666;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    /* Footer */
+    .footer {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+    }
+
+    .footer p {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .social-icons a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+        background: #3498db;
+        transform: translateY(-3px);
+    }
+
+    .social-icons img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+        background-color: #1a1a2e;
+        color: #e6e6e6;
+    }
+
+    body.dark-mode .topbar,
+    body.dark-mode .stat-card,
+    body.dark-mode .professional-card,
+    body.dark-mode .value-item,
+    body.dark-mode .team-member {
+        background-color: #16213e;
+        color: #e6e6e6;
+        border-color: #0f3460;
+    }
+
+    body.dark-mode .search-container input {
+        background-color: #0f3460;
+        border-color: #1a3a5f;
+        color: #e6e6e6;
+    }
+
+    body.dark-mode .profile-link {
+        color: #e6e6e6;
+    }
+
+    body.dark-mode .profile-link:hover {
+        background-color: #0f3460;
+    }
+
+    body.dark-mode .about-main p {
+        color: #d1d5db;
+    }
+
+    body.dark-mode .stat-card h3 {
+        color: #3498db;
+    }
+
+    body.dark-mode .stat-card p {
+        color: #e2e8f0;
+    }
+
+    body.dark-mode .professional-card h3 {
+        color: #e6e6e6;
+    }
+
+    body.dark-mode .professional-card p {
+        color: #e2e8f0;
+    }
+
+    body.dark-mode .value-item {
+        background-color: #1e2a47;
+    }
+
+    body.dark-mode .value-item h4 {
+        color: #e6e6e6;
+    }
+
+    body.dark-mode .value-item p {
+        color: #e2e8f0;
+    }
+
+    body.dark-mode .team-section h2,
+    body.dark-mode .values-section h2 {
+        color: #e6e6e6;
+    }
+
+    body.dark-mode .footer {
+        background: linear-gradient(135deg, #1a2530, #2c3e50);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .about-cards {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .values-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 70px;
+            padding: 15px 10px;
+        }
+        
+        .logo h2 {
+            display: none;
+        }
+        
+        .main-content {
+            margin-left: 70px;
+            padding: 15px;
+        }
+        
+        .topbar {
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .search-container {
+            width: 100%;
+        }
+        
+        .search-container input {
+            width: 100%;
+        }
+        
+        .about-cards,
+        .values-grid,
+        .team-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .about-hero {
+            padding: 40px 20px;
+        }
+        
+        .about-hero h1 {
+            font-size: 2.2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .stats-container {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-card {
+            padding: 25px 15px;
+        }
+        
+        .stat-card h3 {
+            font-size: 2.2rem;
+        }
+        
+        .professional-card {
+            padding: 30px 20px;
+        }
+        
+        .footer {
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+            padding: 30px 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .sidebar {
+            display: none;
+        }
+        
+        .main-content {
+            margin-left: 0;
+        }
+        
+        .about-hero {
+            padding: 30px 15px;
+        }
+        
+        .about-hero h1 {
+            font-size: 1.8rem;
+        }
+        
+        .stats-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .values-section h2,
+        .team-section h2 {
+            font-size: 1.8rem;
+        }
+    }
+  </style>
+</head>
+<body>
+  <!--SideBar-->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/logo2.jpg" alt="Book Store Logo" />
+      <h2>BOOKSTORE</h2>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <a href="categories.html" class="dropbtn">Categories ▼</a>
+        <div class="dropdown-content">
+          <a href="fiction.html">Fiction</a>
+          <a href="non-fiction.html">Non-Fiction</a>
+          <a href="science.html">Science</a>
+          <a href="design.html">Design</a>
+        </div>
+      </div>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </aside>
+
+  <!--Main Section-->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="search-container">
+        <input id="search-input" type="text" placeholder="Search..." />
+        <button onclick="searchSite()">Search</button>
+      </div>
+      <button id="theme-toggle">Dark Mode</button>
+      
+      <!-- Profile Option in Topbar -->
+      <div class="profile-option">
+        <a href="registration.html" class="profile-link">
+          <span class="profile-icon">👤</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+      <h1>About Us</h1>
+      <p class="hero-subtitle">Dedicated to spreading the light of knowledge, providing quality books to every reader</p>
+    </section>
+
+    <!-- About Content -->
+    <div class="about-content">
+      <div class="about-main">
+        <p>Online Book Store is Pakistan's largest online library providing quality books to readers since 2015. Our mission is to make knowledge accessible to every individual.</p>
+        
+        <div class="stats-container">
+          <div class="stat-card">
+            <h3>50,000+</h3>
+            <p>Regular Readers</p>
+          </div>
+          <div class="stat-card">
+            <h3>25,000+</h3>
+            <p>Books Available</p>
+          </div>
+          <div class="stat-card">
+            <h3>100+</h3>
+            <p>Authors</p>
+          </div>
+          <div class="stat-card">
+            <h3>98%</h3>
+            <p>Satisfied Customers</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-cards">
+        <div class="professional-card">
+          <div class="card-icon">📚</div>
+          <h3>Our Mission</h3>
+          <p>Our mission is to make quality books accessible to every individual. Whether they are students, researchers, or general readers, we provide equal opportunities for all.</p>
+        </div>
+
+        <div class="professional-card">
+          <div class="card-icon">🎯</div>
+          <h3>Our Vision</h3>
+          <p>We envision a society where every individual is passionate about reading and enlightened with knowledge. We strive to bring books to every household.</p>
+        </div>
+
+        <div class="professional-card">
+          <div class="card-icon">💫</div>
+          <h3>Our Services</h3>
+          <p>We provide thousands of books in both Urdu and English languages. Complete collection on topics like fiction, non-fiction, science, history, religion, and self-development.</p>
+        </div>
+      </div>
+
+      <!-- Values Section -->
+      <div class="values-section">
+        <h2>Our Values</h2>
+        <div class="values-grid">
+          <div class="value-item">
+            <h4>Quality</h4>
+            <p>We provide only quality and authentic books. Every book is carefully reviewed before being added to our library.</p>
+          </div>
+          <div class="value-item">
+            <h4>Convenience</h4>
+            <p>Easy search, fast delivery, and simple payment methods. We provide every possible facility for our readers.</p>
+          </div>
+          <div class="value-item">
+            <h4>Transparency</h4>
+            <p>All our dealings are completely transparent. Book prices, delivery charges - everything is clearly stated.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Section -->
+      <div class="team-section">
+        <h2>Our Team</h2>
+        <div class="team-grid">
+          <div class="team-member">
+            <div class="member-photo">A</div>
+            <h4>Farah khan</h4>
+            <div class="position">Founder & CEO</div>
+            <p>10+ years of experience, passionate about books and committed to promoting education</p>
+          </div>
+          <div class="team-member">
+            <div class="member-photo">F</div>
+            <h4>khan</h4>
+            <div class="position">Managing Director</div>
+            <p>Masters in Library Science, expert in book selection and cataloging</p>
+          </div>
+          <div class="team-member">
+            <div class="member-photo">I</div>
+            <h4>khann</h4>
+            <div class="position">Technical Director</div>
+            <p>Expert in web development and database management, working to improve the platform</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 Online Book Store. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com" target="_blank">
+          <img src="images/Facebook.jpg" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+          <img src="images/instagram.jpg" alt="Instagram">
+        </a>
+        <a href="https://www.youtube.com" target="_blank">
+          <img src="images/youtube.png" alt="YouTube">
+        </a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Theme Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        if (themeToggle) {
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            
+            // Apply the saved theme
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggle.textContent = 'Light Mode';
+            }
+            
+            // Toggle theme when button is clicked
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    themeToggle.textContent = 'Light Mode';
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    themeToggle.textContent = 'Dark Mode';
+                }
+            });
+        }
+    });
+
+    // Search Functionality
+    function searchSite() {
+        const searchInput = document.getElementById('search-input');
+        if (!searchInput) return;
+        
+        const searchTerm = searchInput.value.trim();
+        
+        if (!searchTerm) {
+            showPopup('Please type something to search');
+            return;
+        }
+        
+        // Simple search implementation for about page
+        const searchableContent = [
+            'mission', 'vision', 'services', 'books', 'readers', 
+            'authors', 'quality', 'convenience', 'transparency', 'team'
+        ];
+        
+        const found = searchableContent.some(term => 
+            term.includes(searchTerm.toLowerCase()) || searchTerm.toLowerCase().includes(term)
+        );
+        
+        if (found) {
+            highlightSearchTerms(searchTerm);
+            showPopup('Search results found');
+        } else {
+            showPopup('No search results found for: ' + searchTerm);
+        }
+    }
+
+    function highlightSearchTerms(term) {
+        const elements = document.querySelectorAll('h1, h2, h3, h4, p');
+        elements.forEach(element => {
+            const html = element.innerHTML;
+            const regex = new RegExp(`(${term})`, 'gi');
+            const newHtml = html.replace(regex, '<mark style="background-color: yellow; color: black;">$1</mark>');
+            element.innerHTML = newHtml;
+        });
+    }
+
+    function showPopup(message) {
+        // Remove existing popup if any
+        const existingPopup = document.querySelector('.custom-popup');
+        if (existingPopup) {
+            existingPopup.remove();
+        }
+        
+        const popup = document.createElement('div');
+        popup.className = 'custom-popup';
+        popup.textContent = message;
+        popup.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            z-index: 10000;
+            font-size: 16px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            min-width: 250px;
+        `;
+        
+        document.body.appendChild(popup);
+        
+        setTimeout(function() {
+            if (document.body.contains(popup)) {
+                document.body.removeChild(popup);
+            }
+        }, 2000);
+    }
+
+    // Stats Counter Animation
+    document.addEventListener('DOMContentLoaded', function() {
+        const statCards = document.querySelectorAll('.stat-card h3');
+        
+        const animateStats = () => {
+            statCards.forEach(stat => {
+                const target = parseInt(stat.textContent.replace('+', ''));
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target + (stat.textContent.includes('+') ? '+' : '');
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current) + (stat.textContent.includes('+') ? '+' : '');
+                    }
+                }, 30);
+            });
+        };
+
+        // Animate stats when page loads
+        setTimeout(animateStats, 1000);
+    });
+
+    // Add keyboard support for search
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input');
+        
+        if (searchInput) {
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    searchSite();
+                }
+            });
+        }
+    });
+
+    // Smooth scrolling for internal links
+    document.addEventListener('DOMContentLoaded', function() {
+        const internalLinks = document.querySelectorAll('a[href^="#"]');
+        
+        internalLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    });
+  </script>
+</body>
+</html>
