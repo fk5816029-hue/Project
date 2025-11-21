@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registeration</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Registration Page Specific Styles */
+    .register-page {
+      padding: 40px 20px;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f5f7fb 0%, #eef2ff 100%);
+    }
+
+    .register-container {
+      max-width: 450px;
+      width: 100%;
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
+      border: 1px solid #e1e5e9;
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-header h1 {
+      color: #4361EE;
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .register-header p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .register-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      padding: 12px 15px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #4361EE;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .terms-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .terms-group input[type="checkbox"] {
+      margin-top: 3px;
+    }
+
+    .terms-group label {
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #666;
+    }
+
+    .terms-group a {
+      color: #4361EE;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .terms-group a:hover {
+      text-decoration: underline;
+    }
+
+    .register-btn {
+      background: #4361EE;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .register-btn:hover {
+      background: #3A56D4;
+      transform: translateY(-2px);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #e1e5e9;
+    }
+
+    .login-link p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #4361EE;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Dark Mode Support */
+    body.dark .register-page {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    }
+
+    body.dark .register-container {
+      background: #1f2937;
+      border-color: #374151;
+    }
+
+    body.dark .register-header h1 {
+      color: #90caf9;
+    }
+
+    body.dark .register-header p {
+      color: #d1d5db;
+    }
+
+    body.dark .form-group label {
+      color: #f3f4f6;
+    }
+
+    body.dark .form-group input {
+      background: #374151;
+      border-color: #4b5563;
+      color: #f3f4f6;
+    }
+
+    body.dark .form-group input:focus {
+      background: #374151;
+      border-color: #4361EE;
+    }
+
+    body.dark .terms-group label {
+      color: #d1d5db;
+    }
+
+    body.dark .login-link {
+      border-top-color: #4b5563;
+    }
+
+    body.dark .login-link p {
+      color: #d1d5db;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .register-container {
+        padding: 30px 20px;
+        margin: 0 15px;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      
+      .register-header h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* Success Message */
+    .success-message {
+      background: #10b981;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .success-message.show {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="images/logoaq.jpg" alt="Alisha Nest Logo" />
+      <h2>ALISHANEST</h2>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <a href="courses.html" class="dropbtn">Courses ▼</a>
+        <div class="dropdown-content">
+          <a href="p.course.html">Programming</a>
+          <a href="english.html">English</a>
+          <a href="science.html">Science</a>
+          <a href="design.html">Design</a>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="registration.html" class="active">Register</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="search-container">
+        <input id="search-input" type="text" placeholder="Search..." />
+        <button onclick="searchSite()">Search</button>
+      </div>
+      <button id="theme-toggle">Dark Mode</button>
+      <div class="profile-option">
+        <a href="registration.html" class="profile-link">
+          <span class="profile-icon">👤</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Register Section - Single Container -->
+    <section class="register-page">
+      <div class="register-container">
+        <div class="register-header">
+          <h1>Register</h1>
+          <p>Create your account to start learning</p>
+        </div>
+
+        <form id="registerForm" class="register-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input type="text" id="firstName" placeholder="Enter your first name" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input type="text" id="lastName" placeholder="Enter your last name" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <input type="password" id="password" placeholder="Create a strong password" required>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password *</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+          </div>
+
+          <div class="terms-group">
+            <input type="checkbox" id="termsAgree" required>
+            <label for="termsAgree">
+              I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button type="submit" class="register-btn">
+            Create Account
+          </button>
+        </form>
+
+        <div id="registerMessage" class="success-message"></div>
+
+        <div class="login-link">
+          <p>Already have an account? <a href="signin.html">Sign In</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2025 Online Book Store. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com" target="_blank">
+          <img src="images/Facebook.jpg" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+          <img src="images/instagram.jpg" alt="Instagram">
+        </a>
+        <a href="https://www.youtube.com" target="_blank">
+          <img src="images/youtube.jpg" alt="YouTube">
+        </a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Registration Form Handling
+    const registerForm = document.getElementById('registerForm');
+    const registerMessage = document.getElementById('registerMessage');
+
+    if (registerForm) {
+      registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const termsAgreed = document.getElementById('termsAgree').checked;
+
+        // Simple validation
+        if (!firstName || !lastName || !email || !password || !confirmPassword) {
+          showMessage('Please fill all required fields', 'error');
+          return;
+        }
+
+        if (password.length < 8) {
+          showMessage('Password must be at least 8 characters long', 'error');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showMessage('Passwords do not match', 'error');
+          return;
+        }
+
+        if (!termsAgreed) {
+          showMessage('Please agree to the terms and conditions', 'error');
+          return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showMessage('Please enter a valid email address', 'error');
+          return;
+        }
+
+        // Save user data (for demo purposes)
+        const userData = {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          joinDate: new Date().toISOString()
+        };
+        localStorage.setItem('userProfile', JSON.stringify(userData));
+
+        // Show success message
+        showMessage(`Welcome to ALISHANEST, ${firstName}! Your account has been created successfully.`, 'success');
+
+        // Reset form
+        registerForm.reset();
+
+        // Redirect to home page after 3 seconds
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 3000);
+      });
+    }
+
+    function showMessage(message, type) {
+      registerMessage.textContent = message;
+      registerMessage.className = 'success-message';
+      
+      if (type === 'success') {
+        registerMessage.style.background = '#10b981';
+      } else {
+        registerMessage.style.background = '#ef4444';
+      }
+      
+      registerMessage.classList.add('show');
+
+      // Auto hide after 5 seconds
+      setTimeout(() => {
+        registerMessage.classList.remove('show');
+      }, 5000);
+    }
+
+    // Theme Toggle (from existing script.js)
+    let themeBtn = document.getElementById("theme-toggle");
+    if (themeBtn) {
+      themeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+        themeBtn.textContent = document.body.classList.contains("dark") ? "Light Mode" : "Dark Mode";
+      });
+
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark");
+        themeBtn.textContent = "Light Mode";
+      }
+    }
+
+    // Search Function (from existing script.js)
+    function searchSite() {
+      let input = document.getElementById("search-input");
+      if (!input || !input.value.trim()) {
+        alert("Please type something to search!");
+        return;
+      }
+      
+      let query = input.value.toLowerCase().trim();
+      
+      const searchData = [
+        { page: "index.html", keywords: ["home", "welcome", "articles", "learn", "edulearn", "main"], title: "Home Page" },
+        { page: "courses.html", keywords: ["course", "all courses", "main course", "popular courses", "enroll"], title: "All Courses" },
+        { page: "p.course.html", keywords: ["programming", "coding", "html", "css", "javascript", "python", "web development", "code", "program", "developer"], title: "Programming Courses" },
+        { page: "english.html", keywords: ["english", "language", "grammar", "speaking", "writing", "vocabulary", "communication", "learn english", "english course"], title: "English Courses" },
+        { page: "science.html", keywords: ["science", "physics", "chemistry", "biology", "experiment", "lab", "scientific", "science course", "biology", "chemistry", "physics"], title: "Science Courses" },
+        { page: "design.html", keywords: ["design", "graphic design", "ui ux", "graphic", "figma", "photoshop", "illustrator", "web design", "user interface"], title: "Design Courses" },
+        { page: "about.html", keywords: ["about", "mission", "vision", "offer", "team", "about us", "our story", "who we are"], title: "About Us" },
+        { page: "contact.html", keywords: ["contact", "feedback", "email", "phone", "address", "rate", "get in touch", "contact us", "support"], title: "Contact" }
+      ];
+      
+      let searchResults = searchData.filter(item => 
+        item.keywords.some(keyword => query.includes(keyword))
+      );
+      
+      if (searchResults.length > 0) {
+        window.location.href = searchResults[0].page;
+      } else {
+        alert("No results found for: " + query);
+      }
+    }
+  </script>
+</body>
+</html>

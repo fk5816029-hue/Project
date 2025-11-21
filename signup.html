@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signup Page</title>
+
+<style>
+    body {
+        margin: 0; padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #d7e7ff, #bfe9ff);
+        display: flex; justify-content: center; align-items: center;
+        height: 100vh;
+    }
+    .container {
+        background: white; padding: 30px; width: 350px;
+        box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
+        border-radius: 10px;
+    }
+    h2 { text-align: center; margin-bottom: 20px; color: #2c3e50; }
+    input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #aaa; border-radius: 6px; font-size: 15px; }
+    button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #217dbb; }
+    p { text-align: center; margin-top: 12px; }
+    .link-btn { color: #3498db; text-decoration: none; font-weight: bold; }
+    .footer { text-align: center; margin-top: 15px; font-size: 13px; color: #555; }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+<h2>Create Account</h2>
+
+<form id="signupForm" method="POST" action="signup.php">
+    <input type="text" placeholder="Full Name" id="signupName" name="name" required>
+    <input type="email" placeholder="Email" id="signupEmail" name="email" required>
+    <input type="password" placeholder="Password" id="signupPassword" name="password" required>
+    <button type="submit">Signup</button>
+    <p>Already have an account? <a href="login.html" class="link-btn">Login</a></p>
+</form>
+
+<div class="footer">&copy; 2025 Online Book Store — All Rights Reserved</div>
+</div>
+
+<script>
+const signupForm = document.getElementById("signupForm");
+signupForm.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+
+    const name = document.getElementById("signupName").value.trim();
+    const email = document.getElementById("signupEmail").value.trim();
+    const password = document.getElementById("signupPassword").value;
+
+    if(!name || !email || !password){
+        alert("Fill all fields!");
+        return;
+    }
+
+    const bodyData = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+
+    try {
+        const res = await fetch("signup.php", {
+            method: "POST",
+            headers: {"Content-Type": "application/x-www-form-urlencoded"},
+            body: bodyData
+        });
+        const data = await res.text();
+        alert(data);
+        if(data.includes("Successful")){
+            signupForm.reset();
+            // Optional redirect after signup
+            // window.location.href="homes.php";
+        }
+    } catch(err){
+        console.error(err);
+        alert("Signup failed!");
+    }
+});
+</script>
+
+</body>
+</html>
